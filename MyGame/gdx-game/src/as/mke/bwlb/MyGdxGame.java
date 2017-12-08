@@ -3,11 +3,16 @@ package as.mke.bwlb;
 import com.badlogic.gdx.*;
 import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.graphics.g2d.*;
+import com.badlogic.gdx.scenes.scene2d.ui.*;
 
 public class MyGdxGame implements ApplicationListener
 {
 	Texture texture;
 	SpriteBatch batch;
+	
+	/*******/
+	/**/Image star;
+	/**/float time;
 
 	Thread TD_Logic;
 	
@@ -77,6 +82,9 @@ public class MyGdxGame implements ApplicationListener
 		
 		TD_Logic.start();
 		
+		
+		/**/star = new Image(new Texture(Gdx.files.internal("particle/bomb.png")));
+		
 	}
 
 	@Override
@@ -84,11 +92,22 @@ public class MyGdxGame implements ApplicationListener
 	{        
 	    Gdx.gl.glClearColor(1, 1, 1, 1);
 	    Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+		
+		/***********************
+		 一颗星星曲线运动
+		 *************************/
+		/**/time += Gdx.graphics.getDeltaTime();
+		/**/star.setX(MoveWay.getXByTime(time));
+		/**/star.setY(MoveWay.getY(star.getX(),time));
+		/**/if(time>=MoveWay.T)time = 0;
+		
 		batch.begin();
 		batch.draw(texture, 0 , 0, 
 				   Gdx.graphics.getWidth() , Gdx.graphics.getHeight() );
 				  
         batch.draw(astart.getTexture(),astart.getX(),astart.getY(),60,60);
+		
+		/**/star.draw(batch,1);
 				   
 		
 		batch.end();
